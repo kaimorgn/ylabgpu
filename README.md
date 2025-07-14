@@ -2,8 +2,8 @@
 ## branch: main
 
 # 1.実装環境
-    - OS: Ubuntu22.04
-    - Python: 3.11.11 # 異なる場合は pyenv コマンドで合わせる
+- OS: Ubuntu22.04
+- Python: 3.11.11 # 異なる場合は pyenv コマンドで合わせる
 
 # 2.リポジトリをクローン
 ~~~
