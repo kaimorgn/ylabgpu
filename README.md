@@ -22,11 +22,12 @@ $ ./2-2_ufw_activate.sh
 ~~~
 
 # 3.APIを有効化
+＊3.1と3.2のどちらかを片方を選んで実行してください
+
 ## 3.1 screenを使用して有効化
 ~~~
 $ cd; screen
 $ cd ylabgpu/
-$ source ~/.venv/fapi/bin/activate
 
 $ ./3-1_screen_api_activate.sh
 ~~~
