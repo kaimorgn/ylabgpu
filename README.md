@@ -1,5 +1,5 @@
 # ylabgpu
-## branch: main
+## branch: feat_cpuinfo
 
 # 1.実装環境
 - OS: Ubuntu22.04
@@ -8,77 +8,64 @@
 # 2.リポジトリをクローン
 ~~~
 $ cd; git clone github:kaimorgn/ylabgpu
-~~~
-
-# 2.リポジトリへ入り，セットアップをする
-## 2.1 Pythonの仮想環境を作成・有効化
-~~~
-$ ./2-1_create_virtual_environment.sh
-~~~
-
-## 2.2 ufwを有効化
-~~~
-$ ./2-2_ufw_activate.sh
-~~~
-
-# 3.APIを有効化
-＊3.1と3.2のどちらかを片方を選んで実行してください
-
-## 3.1 screenを使用して有効化
-~~~
-$ cd; screen
 $ cd ylabgpu/
-
-$ ./3-1_screen_api_activate.sh
-~~~
-=> APIを有効化したら，アドレスを指定してアクセスできるか確認
-~~~
-# MBAでOK
-$ nc -vz IP_ADDRESS 8404
+$ git checkout feat_cpuinfo
 ~~~
 
-## 3.2 serviceとして半永続的有効化
-先にserviceファイルを編集する
+# 3.ディレクトリ構成
 ~~~
-$ emacs -nw gpuapp.service
-~~~
-ファイルを開いたら"XXX"と書かれている箇所のみを編集する．
-"XXX"部分は自分が使用しているアカウント名(例: kai)を
-記述し，保存して編集モードから抜ける．<br>
-編集完了後，下記のファイルを実行してserviceを有効化する．
-serviceとして有効化すると，APIが立ち上がる．
-~~~
-$ ./3-2_move_service_file.sh
-~~~
-=> APIを有効化したら，アドレスを指定してアクセスできるか確認
-~~~
-# MBAでOK
-$ nc -vz IP_ADDRESS 8404
+$ tree
+=> 
+.
+├── README.md
+├── features
+│   ├── clean.sh
+│   ├── command.sh
+│   ├── cpu_domain_info.py
+│   ├── sync_cpu.py
+│   ├── sync_hdd.py
+│   └── sync_ram.py
+└── requirements.txt
+
+1 directory, 8 files
 ~~~
 
-## 3.3 注意点
-＊無事に有効化が完了した場合，PCの再起動はお控えください．
-再起動後，APIを有効化しても外部PCからアクセスできない不具合を
-確認しております．<br>
-もし，再起動した場合は，下記の手順を実行し，ufwとAPIを再度有効化してください．
+# 4.仮想環境を構築
 ~~~
-$ sudo ufw delete allow 8404/tcp
-$ sudo ufw disable
-$ sudo reboot
-
-# 再起動後にufwを有効化
-$ ssh MACHINE_NAME
-$ sudo ufw allo 8404/tcp
-$ sudo ufw enable
-
-# APIを有効化
+$ cd; cd .venv/
+$ pyenv local 3.11.11
+$ python3 -m venv psutil_env
+$ source psutil_env/bin/activate
 $ cd; cd ylabgpu/
-$ ./3-1_screen_api_activate.sh
-~~~
-=> APIを有効化したら，アドレスを指定してアクセスできるか確認
-~~~
-# MBAでOK
-$ nc -vz IP_ADDRESS 8404
+$ pip install -r requirements.txt
 ~~~
 
-以上
+# 5.プログラムを実行
+~~~
+$ cd features/
+$ ./command.sh
+$ ./clean.sh # __pycache__を削除
+~~~
+
+- 実行結果(実行するマシンごとに出力結果が異なります)
+~~~
+===== CPU Info =====
+===== 各部品の製造元と製品番号 =====
+CPU Vendor: GenuineIntel
+CPU Model: 13th Gen Intel(R) Core(TM) i9-13900K
+RAM Vendor: Crucial Technology
+RAM Model: CT32G4DFD832A.M16FF
+RAM Slots: 4
+HDD Vendor: WDC
+HDD Model: CT32G4DFD832A.M16FF
+===== 各部品の稼働状況 =====
+CPU Core Used Percent: 0.0 %
+RAM Used: 2.53 / 125.54 GB
+RAM Percent: 2 %
+HDD Used: 0.54 / 5.41 TB
+HDD Percent: 10.5 %
+~~~
+
+# 6.今後の展望
+- APIと連携してCPU周りのデータを渡せる(JSON形式)ようにする
+- Reflexで構成したカードの中でデータを表示できるようにする

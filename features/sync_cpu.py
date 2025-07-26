@@ -33,8 +33,11 @@ class SyncCPU:
     def get_physical_cores(self):
         return psutil.cpu_count(logical=False)
 
-    def get_use_core_info(self):
-        return psutil.cpu_percent(interval=1, percpu=True)
+    def get_use_core_list(self):
+        return psutil.cpu_percent(interval=0.5, percpu=True)
+
+    def get_use_core_percent(self):
+        return psutil.cpu_percent(interval=0.5, percpu=False)
 
     def get_frequency(self):
         return psutil.cpu_freq()
@@ -57,7 +60,7 @@ class SyncCPU:
         [概要]
         動的情報のみ(PC稼働中に変化し続ける情報)を辞書型で定義して返すメソッド
         '''
-        cores_usage = self.get_use_core_info()
+        cores_usage = self.get_use_core_list()
         
         all_usage = sum(cores_usage) / len(cores_usage) if cores_usage else 0
 
@@ -76,7 +79,7 @@ class SyncCPU:
         print(f"CPU Machine Type  : {self.get_machine_type()}")
         print(f"CPU Logical Cores : {self.get_logical_cores()}")
         print(f"CPU Physical Cores: {self.get_physical_cores()}")
-        print(f"CPU Usage Cores   : {self.get_use_core_info()}")
+        print(f"CPU Usage Cores   : {self.get_use_core_list()}")
         print(f"CPU Frequency     : {self.get_frequency()}")
 
         
