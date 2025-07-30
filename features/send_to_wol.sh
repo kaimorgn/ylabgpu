@@ -14,8 +14,8 @@ send_wol() {
     fi
 
     # テスト出力（実際の実行部分はechoで代替）
-    echo "Send to Magick Packet: $mac_address"
-    # wakeonlan "$mac_address"
+    #echo "Send to Magick Packet: $mac_address"
+    wakeonlan "$mac_address"
 }
 
 # 実行部分（mainのような扱い）

@@ -1,5 +1,5 @@
 # ylabgpu
-## branch: feat_wol
+## branch: dev/backend_api
 
 # 1.実装環境
 - OS: Ubuntu22.04
@@ -9,7 +9,7 @@
 ~~~
 $ cd; git clone github:kaimorgn/ylabgpu
 $ cd; ylabgpu/
-$ git checkout feat_wol
+$ git checkout dev/backend_api
 ~~~
 
 # 3.ディレクトリ構成
@@ -18,23 +18,42 @@ $ tree
 => 
 .
 ├── README.md
-└── features
-    ├── clean.sh
-    ├── send_to_wol.py
-    └── send_to_wol.sh
+├── backend_api.py
+├── clean.sh
+├── features
+│   ├── active_process_monitor.sh
+│   ├── clean.sh
+│   ├── cpu_domain_info.py
+│   ├── send_to_wol.py
+│   ├── send_to_wol.sh
+│   ├── sync_active_process.py
+│   ├── sync_cpu.py
+│   ├── sync_gpu.py
+│   ├── sync_hdd.py
+│   └── sync_ram.py
+└── requirements.txt
 
-1 directory, 4 files
+1 directory, 14 files
+~~~
+
+# 4.仮想環境を構築
+~~~
+$ cd; cd .venv/
+$ pyenv local 3.11.11
+$ python3 -m venv ylabgpu
+$ source ylabgpu/bin/activate
+$ cd; cd ylabgpu/
+$ pip install -r requirements.txt
 ~~~
 
 # 4.プログラムを実行
 ~~~
-$ cd features/
-$ ./send_to_wol.py XX:XX:XX:XX:XX:XX
-$ ./send_to_wol.sh XX:XX:XX:XX:XX:XX
+$ python backend_api.py
 ~~~
 
-- 実行結果(PythonスクリプトとShellスクリプトでは出力結果の有無が異なります)
-
 # 5.今後の展望
-- APIと連携してマジックパケットを送信できるようにする．このとき，Shellスクリプトの方が望ましいかもしれない
-- Reflexで構成したボタンをクリックすると，マジックパケットが送信されてWOLできるようにする
+- CPUとGPU，プロセス一覧をAPIで取得できるようになった．<br>
+＊WOLは今回は除外した
+- 次はReflexで構成したWebアプリ上で取得した情報を表示できるようにする．
+
+
